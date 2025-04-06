@@ -8,7 +8,7 @@ const About = () => {
     {
       category: 'Frontend',
       icon: <FaLaptopCode className="text-4xl text-[#CDEA68]" />,
-      items: ['React', 'JavaScript', 'HTML/CSS', 'Tailwind CSS', 'Framer Motion']
+      items: ['React', 'JavaScript', 'HTML/CSS', 'Tailwind CSS','Bootstrap', 'Framer Motion']
     },
     {
       category: 'Backend',
@@ -18,22 +18,22 @@ const About = () => {
     {
       category: 'Mobile',
       icon: <FaMobileAlt className="text-4xl text-[#CDEA68]" />,
-      items: ['React Native', 'Responsive Design']
+      items: ['Responsive Design']
     },
     {
       category: 'Database',
       icon: <FaDatabase className="text-4xl text-[#CDEA68]" />,
-      items: ['MongoDB', 'MySQL', 'Firebase']
+      items: ['MongoDB', 'MySQL']
     },
     {
       category: 'Tools',
       icon: <FaTools className="text-4xl text-[#CDEA68]" />,
-      items: ['Git', 'VS Code', 'Figma', 'Webpack']
+      items: ['Git', 'VS Code']
     },
     {
       category: 'Languages',
       icon: <FaCode className="text-4xl text-[#CDEA68]" />,
-      items: ['JavaScript', 'TypeScript', 'Python', 'Java']
+      items: ['JavaScript', 'TypeScript']
     }
   ];
 
@@ -145,8 +145,8 @@ const About = () => {
 
         <div className="space-y-6">
           <div className="border-l-2 border-[#CDEA68] pl-4">
-            <h3 className="text-xl font-bold text-white">Bachelor of Computer Science</h3>
-            <p className="text-[#CDEA68]">University Name • 2018-2022</p>
+            <h3 className="text-xl font-bold text-white">(BCCA) Bachelor of Commerce in Computer Application.</h3>
+            <p className="text-[#CDEA68]">Vmv College of Commerce & Computer Application • 2018-2021</p>
             <p className="text-zinc-400 mt-2">
               Studied core computer science concepts, data structures, algorithms, and software development methodologies.
             </p>
@@ -154,7 +154,7 @@ const About = () => {
 
           <div className="border-l-2 border-[#CDEA68] pl-4">
             <h3 className="text-xl font-bold text-white">Frontend Developer</h3>
-            <p className="text-[#CDEA68]">Company Name • 2022-Present</p>
+            <p className="text-[#CDEA68]">CodebergIT • 2024-Present</p>
             <p className="text-zinc-400 mt-2">
               Working on building responsive and interactive web applications using modern JavaScript frameworks.
             </p>

@@ -91,7 +91,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen pt-32 pb-20 px-6 md:px-20">
+    <div className="min-h-screen pt-5 pb-20 px-6 md:px-20">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
