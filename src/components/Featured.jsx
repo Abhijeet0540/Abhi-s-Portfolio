@@ -27,28 +27,28 @@ const Featured = () => {
     ];
 
     return (
-        <div className="w-full py-10 bg-zinc-900 text-white">
+        <div className="w-full py-10 md:py-20 bg-zinc-900 text-white">
             {/* Header */}
-            <div className="w-full px-10 pb-10 border-b-[0.5px] border-zinc-700">
-                <h1 className="text-4xl sm:text-6xl font-['Neue Montreal'] tracking-wide">
+            <div className="w-full px-6 sm:px-10 md:px-20 pb-6 sm:pb-10 border-b-[0.5px] border-zinc-700">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl tracking-wide">
                     Featured Projects
                 </h1>
             </div>
 
             {/* Projects Grid */}
-            <div className="px-5 sm:px-20">
-                <div className="cards w-full flex flex-col sm:flex-row gap-10 mt-10">
+            <div className="px-6 sm:px-10 md:px-20">
+                <div className="cards w-full flex flex-col md:flex-row gap-8 md:gap-10 mt-8 md:mt-12">
                     {projects.map((project, index) => (
                         <motion.div
                             key={index}
                             onHoverStart={() => handleHoverStart(index)}
                             onHoverEnd={() => handleHoverEnd(index)}
-                            className="relative w-full sm:w-1/2 h-[50vh] sm:h-[75vh]"
+                            className="relative w-full md:w-1/2 h-[30vh] sm:h-[40vh] md:h-[50vh] lg:h-[60vh]"
                         >
-                            {/* Animated Project Title */}
+                            {/* Animated Project Title - Hidden on mobile */}
                             <h1
-                                className={`absolute flex overflow-hidden ${index === 0 ? 'left-full -translate-x-1/2' : 'right-full translate-x-1/2'
-                                    } top-1/2 -translate-y-1/2 uppercase font-['Neue Montreal'] text-6xl sm:text-8xl z-10 leading-none text-[#CDEA68] font-extrabold tracking-tight`}
+                                className={`absolute hidden md:flex overflow-hidden ${index === 0 ? 'left-full -translate-x-1/2' : 'right-full translate-x-1/2'
+                                    } top-1/2 -translate-y-1/2 uppercase text-5xl lg:text-7xl xl:text-8xl z-10 leading-none text-[#CDEA68] font-extrabold tracking-tight`}
                             >
                                 {project.title.split('').map((char, charIndex) => (
                                     <motion.span
@@ -63,6 +63,11 @@ const Featured = () => {
                                 ))}
                             </h1>
 
+                            {/* Mobile Project Title */}
+                            <h2 className="hidden text-xl font-bold text-[#CDEA68] mb-2">
+                                {project.title}
+                            </h2>
+
                             {/* Card Content */}
                             <div className="card w-full h-full rounded-xl overflow-hidden relative group">
                                 <img
@@ -75,9 +80,9 @@ const Featured = () => {
                                     initial={{ opacity: 0 }}
                                     whileHover={{ opacity: 1 }}
                                     transition={{ duration: 0.3 }}
-                                    className="absolute inset-0 bg-black bg-opacity-50 flex items-end p-5"
+                                    className="absolute inset-0 bg-black bg-opacity-50 flex items-end p-4 sm:p-5"
                                 >
-                                    <p className="text-sm sm:text-base font-['Neue Montreal'] text-white">
+                                    <p className="text-xs sm:text-sm md:text-base text-white">
                                         {project.description}
                                     </p>
                                 </motion.div>
@@ -87,10 +92,9 @@ const Featured = () => {
                 </div>
 
                 {/* Call to Action */}
-                <div className="mt-10 text-center">
+                <div className="mt-8 sm:mt-10 md:mt-16 text-center">
                     <button
-                        onClick={() => window.scrollTo({ top: 3000, behavior: 'smooth' })}
-                        className="px-6 py-3 bg-[#CDEA68] text-black font-['Neue Montreal'] uppercase rounded-full hover:bg-[#b8d356] transition-colors"
+                        className="px-4 sm:px-6 md:px-8 py-2 sm:py-3 bg-[#CDEA68] text-black uppercase rounded-full hover:bg-[#b8d356] transition-colors text-sm sm:text-base"
                     >
                         See All Projects
                     </button>
