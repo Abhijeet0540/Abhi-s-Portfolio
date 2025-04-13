@@ -205,6 +205,14 @@ const HeroSection = () => {
           >
             <FaLinkedin size={28} />
           </a>
+          {/* <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-zinc-400 hover:text-white transition-colors"
+          >
+            <FaFileDownload size={28} />
+          </a> */}
         </div>
       </motion.div>
 

@@ -1,5 +1,6 @@
 import { motion, useAnimation } from 'framer-motion';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Featured = () => {
     const cardControls = [useAnimation(), useAnimation()];
@@ -93,11 +94,13 @@ const Featured = () => {
 
                 {/* Call to Action */}
                 <div className="mt-8 sm:mt-10 md:mt-16 text-center">
-                    <button
-                        className="px-4 sm:px-6 md:px-8 py-2 sm:py-3 bg-[#CDEA68] text-black uppercase rounded-full hover:bg-[#b8d356] transition-colors text-sm sm:text-base"
-                    >
-                        See All Projects
-                    </button>
+                    <Link to="/projects" className="inline-block " >
+                        <button
+                            className="px-4 sm:px-6 md:px-8 py-2 sm:py-3 bg-[#CDEA68] text-black uppercase rounded-full hover:bg-[#b8d356] transition-colors text-sm sm:text-base"
+                        >
+                            See All Projects
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

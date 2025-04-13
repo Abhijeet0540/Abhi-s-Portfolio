@@ -18,7 +18,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="fixed top-0 left-0 w-full  md:px-20  flex items-center justify-between font-['Neue Montreal'] z-[99] bg-zinc-900/80 backdrop-filter backdrop-blur-lg border-b border-zinc-800/50 shadow-lg">
+        <nav className="fixed top-0 left-0 w-full px-6  md:px-20  flex items-center justify-between font-['Neue Montreal'] z-[99] bg-zinc-900/80 backdrop-filter backdrop-blur-lg border-b border-zinc-800/50 shadow-lg">
             {/* Logo Section */}
             <Link to="/" className="flex items-center">
                 <img className='w-[6vh]' src="./logo.png" alt="Portfolio Logo" />
@@ -42,7 +42,7 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Menu Icon */}
-            <div className="md:hidden cursor-pointer" onClick={toggleMobileMenu}>
+            <div className="md:hidden cursor-pointer " onClick={toggleMobileMenu}>
                 {mobileMenuOpen ? <VscChromeClose size={24} /> : <VscThreeBars size={24} />}
             </div>
 
