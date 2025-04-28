@@ -9,14 +9,14 @@ const Projects = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [changingPage, setChangingPage] = useState(false);
-  const projectsPerPage = 6; // Number of projects to display per page
+  const [hoveredId, setHoveredId] = useState(null);
+
+  const projectsPerPage = 6; // Projects per page
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        // Your GitHub username
         const username = 'Abhijeet0540';
-        // Fetch all repositories to handle pagination on client side
         const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
 
         if (!response.ok) {
@@ -25,11 +25,7 @@ const Projects = () => {
 
         const data = await response.json();
         setProjects(data);
-
-        // Calculate total pages
-        const calculatedTotalPages = Math.ceil(data.length / projectsPerPage);
-        setTotalPages(calculatedTotalPages);
-
+        setTotalPages(Math.ceil(data.length / projectsPerPage));
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -40,32 +36,26 @@ const Projects = () => {
     fetchProjects();
   }, [projectsPerPage]);
 
-  // Reset to page 1 when component mounts
   useEffect(() => {
     setCurrentPage(1);
   }, []);
 
-  // Get current projects for the current page
   const getCurrentProjects = () => {
-    const indexOfLastProject = currentPage * projectsPerPage;
-    const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-    return projects.slice(indexOfFirstProject, indexOfLastProject);
+    const indexOfLast = currentPage * projectsPerPage;
+    const indexOfFirst = indexOfLast - projectsPerPage;
+    return projects.slice(indexOfFirst, indexOfLast);
   };
 
-  // Handle page change
   const handlePageChange = (pageNumber) => {
     setChangingPage(true);
     setCurrentPage(pageNumber);
-    // Scroll to top when changing pages
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Add a small delay to show loading animation during page transition
     setTimeout(() => {
       setChangingPage(false);
     }, 300);
   };
 
-  // Project card animation variants
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: (i) => ({
@@ -92,15 +82,12 @@ const Projects = () => {
       <div className="min-h-screen flex flex-col items-center justify-center">
         <h2 className="text-2xl font-bold text-red-500 mb-4">Error Loading Projects</h2>
         <p>{error}</p>
-        <p className="mt-4">
-          Please check your internet connection or try again later.
-        </p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen py-10 px-6 md:px-20">
+    <div className="min-h-screen py-10 px-6 md:px-20 bg-zinc-900">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -109,7 +96,7 @@ const Projects = () => {
       >
         <h1 className="text-4xl md:text-6xl font-bold mb-4 text-[#CDEA68]">My Projects</h1>
         <p className="text-lg md:text-xl max-w-3xl mx-auto text-zinc-400 mb-6">
-          A showcase of my work from GitHub repositories, featuring web applications, tools, and experiments.
+          A showcase of my GitHub repositories.
         </p>
         <div className="flex justify-center items-center gap-4 mt-8">
           <a
@@ -119,7 +106,7 @@ const Projects = () => {
             className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-6 py-3 rounded-full transition-all duration-300 border border-zinc-700"
           >
             <FaGithub size={20} />
-            View GitHub Profile
+            View GitHub
           </a>
           <a
             href="mailto:abhijeetd439@gmail.com"
@@ -131,28 +118,24 @@ const Projects = () => {
         </div>
       </motion.div>
 
+      {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {getCurrentProjects().map((project, index) => {
-          // Define project images based on name or type
           const projectImages = {
-            'register-form': 'https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?q=80&w=2076&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            'NodeScribe': 'https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            'StreamVibe': 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2025&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            'blog_ad': 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            'React-Task': 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            'E-commerce': 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            'Blog-Website-': 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            'tesseract': 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            'MarvelHeroes': 'https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+            'register-form': 'https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?q=80&w=2076',
+            'NodeScribe': 'https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=2070',
+            'StreamVibe': 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2025',
+            'blog_ad': 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070',
+            'React-Task': 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?q=80&w=2070',
+            'E-commerce': 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070',
+            'Blog-Website-': 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=2072',
+            'tesseract': 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2070',
+            'MarvelHeroes': 'https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?q=80&w=2070'
           };
 
-          // Default image for projects without specific images
           const defaultImage = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
-
-          // Get project image or use default
           const projectImage = projectImages[project.name] || defaultImage;
 
-          // Get project language color
           const languageColors = {
             JavaScript: '#f1e05a',
             TypeScript: '#3178c6',
@@ -163,6 +146,20 @@ const Projects = () => {
             Kotlin: '#A97BFF',
           };
 
+          // Determine vertical position based on index
+          // This creates a staggered pattern where:
+          // - First card: normal position
+          // - Second card: moved down
+          // - Third card: moved up
+          // - Pattern repeats
+          const getPositionClass = (idx) => {
+            const position = idx % 3;
+            if (position === 0) return "lg:mt-0";
+            if (position === 1) return "lg:mt-12";
+            if (position === 2) return "lg:-mt-8";
+            return "";
+          };
+
           return (
             <motion.div
               key={project.id}
@@ -170,28 +167,12 @@ const Projects = () => {
               initial="hidden"
               animate="visible"
               variants={cardVariants}
-              className="bg-zinc-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-zinc-700 flex flex-col h-full"
+              className={`bg-zinc-800 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col h-full ${getPositionClass(index)}`}
+              onMouseEnter={() => setHoveredId(project.id)}
+              onMouseLeave={() => setHoveredId(null)}
             >
-              {/* Project Image */}
-              <div className="h-48 overflow-hidden relative">
-                <img
-                  src={projectImage}
-                  alt={project.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent opacity-70"></div>
-                <div className="absolute bottom-4 left-4 flex space-x-2">
-                  <span className="flex items-center text-yellow-400 bg-zinc-900 bg-opacity-70 px-2 py-1 rounded-md text-xs">
-                    <FaStar className="mr-1" /> {project.stargazers_count}
-                  </span>
-                  <span className="flex items-center text-blue-400 bg-zinc-900 bg-opacity-70 px-2 py-1 rounded-md text-xs">
-                    <FaCodeBranch className="mr-1" /> {project.forks_count}
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-6 flex-grow flex flex-col">
-                <div className="flex justify-between items-start mb-4">
+              <div className="p-6 pb-3">
+                <div className="flex justify-between items-start mb-2">
                   <h3 className="text-xl font-bold text-white">{project.name.replace(/-/g, ' ')}</h3>
                   {project.language && (
                     <span
@@ -202,7 +183,33 @@ const Projects = () => {
                     </span>
                   )}
                 </div>
+                <div className="flex space-x-2 mb-3">
+                  <span className="flex items-center text-yellow-400 text-xs">
+                    <FaStar className="mr-1" /> {project.stargazers_count}
+                  </span>
+                  <span className="flex items-center text-blue-400 text-xs">
+                    <FaCodeBranch className="mr-1" /> {project.forks_count}
+                  </span>
+                </div>
+              </div>
 
+              <div className="px-4 pb-4">
+                <motion.div
+                  className="overflow-hidden rounded-2xl"
+                  animate={{
+                    scale: hoveredId === project.id ? 1.03 : 1,
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <img
+                    src={projectImage}
+                    alt={project.name}
+                    className="w-full h-48 object-cover"
+                  />
+                </motion.div>
+              </div>
+
+              <div className="p-6 pt-2 flex-grow flex flex-col">
                 <p className="text-zinc-400 mb-4 flex-grow">
                   {project.description || "A project showcasing my development skills and creativity."}
                 </p>
@@ -240,7 +247,7 @@ const Projects = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-white hover:text-[#CDEA68] transition-colors p-2 bg-zinc-700 rounded-full"
-                        title="View Live Demo"
+                        title="View Live"
                       >
                         <FaExternalLinkAlt size={16} />
                       </a>
@@ -253,7 +260,7 @@ const Projects = () => {
         })}
       </div>
 
-      {/* Pagination Controls */}
+      {/* Pagination */}
       {totalPages > 1 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -265,43 +272,23 @@ const Projects = () => {
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
             className={`flex items-center justify-center w-10 h-10 rounded-full ${currentPage === 1 ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'bg-zinc-800 text-white hover:bg-zinc-700'} transition-colors`}
-            aria-label="Previous Page"
           >
             <FaChevronLeft size={16} />
           </button>
 
-          {/* Page Numbers */}
           <div className="flex gap-2">
-            {[...Array(totalPages)].map((_, index) => {
-              const pageNumber = index + 1;
-              // Show current page, first page, last page, and one page before and after current
-              const shouldShowPage =
-                pageNumber === 1 ||
-                pageNumber === totalPages ||
-                Math.abs(pageNumber - currentPage) <= 1;
-
-              // Show ellipsis for gaps
-              if (!shouldShowPage) {
-                // Show ellipsis only once between gaps
-                if (pageNumber === 2 || pageNumber === totalPages - 1) {
-                  return (
-                    <span key={pageNumber} className="flex items-center justify-center w-10 h-10 text-zinc-500">
-                      ...
-                    </span>
-                  );
-                }
-                return null;
-              }
+            {[...Array(totalPages)].map((_, idx) => {
+              const pageNum = idx + 1;
+              const shouldShow = pageNum === 1 || pageNum === totalPages || Math.abs(pageNum - currentPage) <= 1;
+              if (!shouldShow) return null;
 
               return (
                 <button
-                  key={pageNumber}
-                  onClick={() => handlePageChange(pageNumber)}
-                  className={`w-10 h-10 rounded-full ${currentPage === pageNumber ? 'bg-[#CDEA68] text-black font-bold' : 'bg-zinc-800 text-white hover:bg-zinc-700'} transition-colors`}
-                  aria-label={`Page ${pageNumber}`}
-                  aria-current={currentPage === pageNumber ? 'page' : undefined}
+                  key={pageNum}
+                  onClick={() => handlePageChange(pageNum)}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${pageNum === currentPage ? 'bg-[#CDEA68] text-black' : 'bg-zinc-800 text-white hover:bg-zinc-700'}`}
                 >
-                  {pageNumber}
+                  {pageNum}
                 </button>
               );
             })}
@@ -311,7 +298,6 @@ const Projects = () => {
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
             className={`flex items-center justify-center w-10 h-10 rounded-full ${currentPage === totalPages ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed' : 'bg-zinc-800 text-white hover:bg-zinc-700'} transition-colors`}
-            aria-label="Next Page"
           >
             <FaChevronRight size={16} />
           </button>
@@ -322,3 +308,4 @@ const Projects = () => {
 };
 
 export default Projects;
+

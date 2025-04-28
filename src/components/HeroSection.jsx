@@ -155,8 +155,9 @@ const HeroSection = () => {
         transition={{ duration: 0.8 }}
         className="text-center max-w-4xl mx-auto"
       >
+        {/* my name */}
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-          Hi, I'm <span className="text-[#CDEA68]">Abhijeet</span>
+          Hi, I'm <span className="text-[#CDEA68] font-['Dollan']">Abhijeet</span>
           <br />
           <span className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl">Frontend Developer & UI Designer</span>
         </h1>
@@ -198,7 +199,7 @@ const HeroSection = () => {
             <FaGithub size={28} />
           </a>
           <a
-            href="#"
+            href="https://www.linkedin.com/in/abhijeet-dongre-838359296/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-zinc-400 hover:text-white transition-colors"
@@ -215,26 +216,11 @@ const HeroSection = () => {
           </a> */}
         </div>
       </motion.div>
-
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        className="mt-10 md:mt-20 w-full max-w-5xl mx-auto"
-      >
-        {/* <h3 className="text-center text-lg md:text-xl text-zinc-400 mb-6">My Tech Stack</h3> */}
-        <div className="relative overflow-hidden w-full">
-          <div className="absolute left-0 top-0 bottom-0 w-12 md:w-20 z-10 bg-gradient-to-r from-zinc-900 to-transparent"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-12 md:w-20 z-10 bg-gradient-to-l from-zinc-900 to-transparent"></div>
-
-        </div>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-        className="mt-10  w-full  mx-auto rounded-"
-      >
+        className="mt-10  w-full  mx-auto rounded-2xl overflow-hidden">
         <div
           ref={sliderRef}
           className="flex items-center gap-8 md:gap-12 py-4 overflow-x-auto scrollbar-hide"
@@ -295,3 +281,5 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
+

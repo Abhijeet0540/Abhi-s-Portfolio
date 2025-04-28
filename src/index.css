@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'Dollan';
+    src: url('/Theories\ Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Custom cursor styles */
+@media (min-width: 769px) {
+
+    html,
+    body {
+        cursor: none !important;
+    }
+
+    a,
+    button,
+    .cursor-hover {
+        cursor: none !important;
+    }
+}
+
+/* Default cursor for mobile devices */
+@media (max-width: 768px) {
+
+    html,
+    body,
+    a,
+    button {
+        cursor: auto !important;
+    }
+}

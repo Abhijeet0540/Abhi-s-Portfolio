@@ -8,7 +8,7 @@ const About = () => {
     {
       category: 'Frontend',
       icon: <FaLaptopCode className="text-4xl text-[#CDEA68]" />,
-      items: ['React', 'JavaScript', 'HTML/CSS', 'Tailwind CSS','Bootstrap', 'Framer Motion']
+      items: ['React', 'JavaScript', 'HTML/CSS', 'Tailwind CSS','Bootstrap', 'Framer Motion', 'GSAP']
     },
     {
       category: 'Backend',
@@ -33,7 +33,7 @@ const About = () => {
     {
       category: 'Languages',
       icon: <FaCode className="text-4xl text-[#CDEA68]" />,
-      items: ['JavaScript', 'TypeScript']
+      items: ['JavaScript', 'TypeScript' ]
     }
   ];
 
