@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import React from 'react';
 
 const Marquee = () => {
-    const marqueeText = 'DESIGN DEVELOP DISRUPT';
+    const marqueeText = 'INNOVATE CREATE ELEVATE';
 
     return (
         <div

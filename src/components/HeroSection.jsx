@@ -159,12 +159,11 @@ const HeroSection = () => {
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white leading-tight">
           Hi, I'm <span className="text-[#CDEA68] font-['Dollan']">Abhijeet</span>
           <br />
-          <span className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl">Frontend Developer & UI Designer</span>
+          <span className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl">Your Friendly Neighborhood Code Wizard</span>
         </h1>
 
-        <p className="text-base md:text-xl text-zinc-400 mb-10 max-w-3xl mx-auto px-4">
-          I create engaging, responsive web experiences with modern technologies.
-          Passionate about clean code, intuitive UIs, and solving complex problems.
+        <p className="text-base md:text-xl text-zinc-400 mb-10 max-w-4xl  mx-auto px-4">
+          I build sleek, responsive websites with React & Node.js — fast, robust, and polished. Turning caffeine into code to solve the unsolvable.
         </p>
 
         <div className="flex flex-wrap justify-center gap-4 mb-12">

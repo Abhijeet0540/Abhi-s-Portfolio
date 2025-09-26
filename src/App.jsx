@@ -9,7 +9,7 @@ import Cards from './components/Cards'
 const App = () => {
   return (
     <>
-      <HeroSection  />
+      <HeroSection />
       <Marquee />
       <About_us />
       <Eyes />

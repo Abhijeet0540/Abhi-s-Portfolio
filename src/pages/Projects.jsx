@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { preloadProjectImages, loadProjectImage } from '../utils/unsplashApi.ts';
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -10,6 +11,8 @@ const Projects = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [changingPage, setChangingPage] = useState(false);
   const [hoveredId, setHoveredId] = useState(null);
+  const [projectImages, setProjectImages] = useState({});
+  const [imageLoading, setImageLoading] = useState({});
 
   const projectsPerPage = 6; // Projects per page
 
@@ -26,8 +29,15 @@ const Projects = () => {
         const data = await response.json();
         setProjects(data);
         setTotalPages(Math.ceil(data.length / projectsPerPage));
+
+        // Load images for the first page of projects
+        const firstPageProjects = data.slice(0, projectsPerPage);
+        const images = await preloadProjectImages(firstPageProjects);
+        setProjectImages(images);
+
         setLoading(false);
       } catch (error) {
+        console.error('Error fetching projects:', error);
         setError(error.message);
         setLoading(false);
       }
@@ -36,8 +46,50 @@ const Projects = () => {
     fetchProjects();
   }, [projectsPerPage]);
 
+  // Load images when page changes
+  useEffect(() => {
+    const loadImagesForCurrentPage = async () => {
+      if (projects.length === 0 || !changingPage) return;
+
+      const currentProjects = getCurrentProjects();
+
+      // Mark all current projects as loading
+      const loadingState = {};
+      currentProjects.forEach(project => {
+        loadingState[project.id] = true;
+      });
+      setImageLoading(loadingState);
+
+      try {
+        // Load images for current page
+        const newImages = await preloadProjectImages(currentProjects);
+
+        // Update project images and clear loading state
+        setProjectImages(prevImages => ({
+          ...prevImages,
+          ...newImages
+        }));
+      } catch (error) {
+        console.error('Error loading images:', error);
+      } finally {
+        setImageLoading({});
+        setChangingPage(false);
+      }
+    };
+
+    loadImagesForCurrentPage();
+  }, [currentPage, projects, changingPage]);
+
   useEffect(() => {
     setCurrentPage(1);
+  }, []);
+
+  // Clear image loading states when component unmounts
+  useEffect(() => {
+    return () => {
+      // This cleanup function runs when the component unmounts
+      setImageLoading({});
+    };
   }, []);
 
   const getCurrentProjects = () => {
@@ -55,6 +107,34 @@ const Projects = () => {
       setChangingPage(false);
     }, 300);
   };
+
+  // Function to handle loading an image for a specific project
+  const handleLoadImage = useCallback((projectId) => {
+    // Set loading state for this project
+    setImageLoading(prev => ({
+      ...prev,
+      [projectId]: true
+    }));
+
+    // Find the project by ID
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+
+    // Load the image
+    loadProjectImage(project, (name, imageUrl) => {
+      // Update project images
+      setProjectImages(prev => ({
+        ...prev,
+        [name]: imageUrl
+      }));
+
+      // Clear loading state
+      setImageLoading(prev => ({
+        ...prev,
+        [projectId]: false
+      }));
+    });
+  }, [projects]);
 
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -121,19 +201,9 @@ const Projects = () => {
       {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {getCurrentProjects().map((project, index) => {
-          const projectImages = {
-            'register-form': 'https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?q=80&w=2076',
-            'NodeScribe': 'https://images.unsplash.com/photo-1517842645767-c639042777db?q=80&w=2070',
-            'StreamVibe': 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2025',
-            'blog_ad': 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070',
-            'React-Task': 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?q=80&w=2070',
-            'E-commerce': 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070',
-            'Blog-Website-': 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=2072',
-            'tesseract': 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2070',
-            'MarvelHeroes': 'https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?q=80&w=2070'
-          };
-
-          const defaultImage = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+          // Get image from our dynamic image state, or use a placeholder while loading
+          const isImageLoading = imageLoading[project.id];
+          const defaultImage = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&h=450&fit=crop';
           const projectImage = projectImages[project.name] || defaultImage;
 
           const languageColors = {
@@ -195,17 +265,78 @@ const Projects = () => {
 
               <div className="px-4 pb-4">
                 <motion.div
-                  className="overflow-hidden rounded-2xl"
+                  className="overflow-hidden rounded-2xl relative group"
                   animate={{
                     scale: hoveredId === project.id ? 1.03 : 1,
                   }}
                   transition={{ duration: 0.3 }}
                 >
-                  <img
-                    src={projectImage}
-                    alt={project.name}
-                    className="w-full h-48 object-cover"
+                  {/* Loading overlay */}
+                  {isImageLoading && (
+                    <div className="absolute inset-0 bg-zinc-800 flex items-center justify-center z-10">
+                      <div className="w-8 h-8 border-2 border-t-transparent border-[#CDEA68] rounded-full animate-spin"></div>
+                    </div>
+                  )}
+
+                  {/* Project image with blur-up loading effect */}
+                  <motion.div className="relative w-full h-48">
+                    {isImageLoading && (
+                      <div className="absolute inset-0 bg-zinc-800 flex flex-col items-center justify-center z-10">
+                        <div className="w-8 h-8 border-2 border-t-transparent border-[#CDEA68] rounded-full animate-spin mb-2"></div>
+                        <span className="text-xs text-zinc-400">Generating image based on repo description...</span>
+                      </div>
+                    )}
+                    <motion.img
+                      src={projectImage}
+                      alt={project.name}
+                      className="w-full h-full object-cover"
+                      initial={{ filter: "blur(10px)", opacity: 0.8 }}
+                      animate={{
+                        filter: "blur(0px)",
+                        opacity: 1,
+                        transition: { duration: 0.5 }
+                      }}
+                      onLoad={() => {
+                        if (isImageLoading) {
+                          setImageLoading(prev => ({
+                            ...prev,
+                            [project.id]: false
+                          }));
+                        }
+                      }}
+                      onError={() => {
+                        handleLoadImage(project.id);
+                      }}
+                    />
+                  </motion.div>
+
+                  {/* Overlay gradient for better text contrast */}
+                  <div
+                    className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent opacity-40"
+                    style={{ mixBlendMode: 'multiply' }}
                   />
+
+                  {/* Refresh image button */}
+                  {!isImageLoading && (
+                    <button
+                      className="absolute top-2 right-2 bg-black bg-opacity-50 p-1.5 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        try {
+                          // Clear the cached image and load a new one
+                          localStorage.removeItem(`unsplash_image_${project.name}`);
+                        } catch (error) {
+                          console.warn('Error removing from localStorage:', error);
+                        }
+                        handleLoadImage(project.id);
+                      }}
+                      title="Get new image"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    </button>
+                  )}
                 </motion.div>
               </div>
 

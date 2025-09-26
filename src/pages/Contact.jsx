@@ -120,7 +120,7 @@ const Contact = () => {
               <FaMapMarkerAlt className="text-[#CDEA68] text-xl mt-1 mr-4" />
               <div>
                 <h3 className="font-bold text-white">Location</h3>
-                <p className="text-zinc-400">Mumbai, India</p>
+                <p className="text-zinc-400">Maharashtra Nagpur</p>
               </div>
             </motion.div>
 
@@ -129,7 +129,7 @@ const Contact = () => {
               <div>
                 <h3 className="font-bold text-white">Email</h3>
                 <a href="mailto:abhijeetd439@gmail.com" className="text-zinc-400 hover:text-[#CDEA68] transition-colors">
-                  abhijeetd439@gmail.com
+                abhijeetd0540@gmail.com
                 </a>
               </div>
             </motion.div>
@@ -138,7 +138,7 @@ const Contact = () => {
               <FaPhone className="text-[#CDEA68] text-xl mt-1 mr-4" />
               <div>
                 <h3 className="font-bold text-white">Phone</h3>
-                <p className="text-zinc-400">+91 XXXXXXXXXX</p>
+                <p className="text-zinc-400">+91 8657757822</p>
               </div>
             </motion.div>
 

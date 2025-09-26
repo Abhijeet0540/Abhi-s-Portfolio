@@ -3,14 +3,11 @@ import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Cursor from '../components/Cursor';
-import LocomotiveScroll from 'locomotive-scroll';
 
 const RootLayout = () => {
+  // Removed LocomotiveScroll initialization as it might be causing issues
   React.useEffect(() => {
-    const locomotiveScroll = new LocomotiveScroll();
-    return () => {
-      if (locomotiveScroll) locomotiveScroll.destroy();
-    };
+    // Initialize any global effects here if needed
   }, []);
 
   return (

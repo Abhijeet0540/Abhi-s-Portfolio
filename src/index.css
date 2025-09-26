@@ -9,6 +9,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Bolgota';
+    src: url('/public/fonts/BolgotaFREE.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Custom cursor styles */
 @media (min-width: 769px) {
 

@@ -1,6 +1,6 @@
 import React from 'react';
 const Footer = () => {
-    
+
     return (
         <div className='w-full bg-zinc-900 px-6 sm:px-10 md:px-20 py-10 sm:py-10 text-white relative'>
             <div className="flex flex-col lg:flex-row gap-10 lg:gap-5">
@@ -60,7 +60,7 @@ const Footer = () => {
                             {/* Email */}
                             <div >
                                 <span className="underline text-base sm:text-lg font-medium">E.</span>
-                                {["abhijeed439@gmail.com"].map((item, index) => (
+                                {["abhijeetd0540@gmail.com"].map((item, index) => (
                                     <a key={index} className='flex underline hover:text-[#CDEA68] transition-colors' href="https://gemail.com">{item}</a>
                                 ))}
                             </div>
